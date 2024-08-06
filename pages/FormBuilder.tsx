@@ -69,7 +69,7 @@ const Home: NextPage = () => {
       options = opts?.split(',');
     }
 
-    const navigateToFormId = prompt('Enter the form ID to navigate to (if any):');
+    const navigateToFormId = prompt(`Enter the form ID to navigate to (suggestions: ${forms.join(', ')}):`);
     let condition: Condition | undefined = undefined;
 
     if (navigateToFormId) {
@@ -141,6 +141,12 @@ const Home: NextPage = () => {
     }
   };
 
+  const handleButtonClick = (element: FormElement) => {
+    if (element.condition && evaluateCondition(element.condition, 'clicked')) {
+      loadForm(element.navigateToFormId!);
+    }
+  };
+
   const editCondition = (index: number) => {
     const element = formElements[index];
     setEditingConditionIndex(index);
@@ -170,7 +176,7 @@ const Home: NextPage = () => {
     setNavigateToFormId('');
   };
 
-  const renderFormElement = (element: FormElement, index: number) => (
+  const renderFormElement = (element: FormElement, index: number, isPreview: boolean) => (
     <div key={index}>
       <label>{element.label}</label>
       {element.type === 'text' && (
@@ -196,7 +202,7 @@ const Home: NextPage = () => {
           <label>{option}</label>
         </div>
       ))}
-      {element.type === 'button' && <button onClick={(e) => handleInputChange(element, 'clicked')}>{element.label}</button>}
+      {element.type === 'button' && <button onClick={(e) => handleButtonClick(element)}>{element.label}</button>}
       {element.type === 'color' && <input type="color" onChange={(e) => handleInputChange(element, e.target.value)} />}
       {element.type === 'range' && <input type="range" onChange={(e) => handleInputChange(element, e.target.value)} />}
       {element.type === 'date' && <input type="date" onChange={(e) => handleInputChange(element, e.target.value)} />}
@@ -205,7 +211,7 @@ const Home: NextPage = () => {
       {element.type === 'month' && <input type="month" onChange={(e) => handleInputChange(element, e.target.value)} />}
       {element.type === 'week' && <input type="week" onChange={(e) => handleInputChange(element, e.target.value)} />}
       {element.type === 'file' && <input type="file" onChange={(e) => handleInputChange(element, 'file_selected')} />}
-      {element.condition && (
+      {!isPreview && element.condition && (
         <div>
           <p>Condition: {element.condition.elementLabel} {element.condition.operator} {element.condition.value}</p>
           <button onClick={() => editCondition(index)}>Edit Condition</button>
@@ -251,7 +257,6 @@ const Home: NextPage = () => {
             <button onClick={() => addElement('month')}>Add Month</button>
             <button onClick={() => addElement('week')}>Add Week</button>
             <button onClick={() => addElement('file')}>Add File Upload</button>
-            <button onClick={saveForm}>Save Form</button>
           </div>
           <div className="elements">
             {formElements.map((element, index) => (
@@ -259,15 +264,16 @@ const Home: NextPage = () => {
                 <p>{element.label} ({element.type})</p>
                 {element.options && <p>Options: {element.options.join(', ')}</p>}
                 <button onClick={() => removeElement(index)}>Remove</button>
-                {renderFormElement(element, index)}
+                {renderFormElement(element, index, false)}
               </div>
             ))}
           </div>
+          <button onClick={saveForm}>Save Form</button>
         </div>
         <div className="preview">
           <h2>Form Preview</h2>
           <div className="preview-elements">
-            {formElements.map((element, index) => renderFormElement(element, index))}
+            {formElements.map((element, index) => renderFormElement(element, index, true))}
           </div>
         </div>
       </div>
@@ -296,7 +302,11 @@ const Home: NextPage = () => {
           </label>
           <label>
             Navigate to Form ID:
-            <input type="text" value={navigateToFormId} onChange={(e) => setNavigateToFormId(e.target.value)} />
+            <select value={navigateToFormId} onChange={(e) => setNavigateToFormId(e.target.value)}>
+              {forms.map((form) => (
+                <option key={form} value={form} >{form}</option>
+              ))}
+            </select>
           </label>
           <button onClick={saveCondition}>Save Condition</button>
         </div>
