@@ -8,9 +8,9 @@ Render HTML content based on API responses.
 Installation
 Clone the repository:
 
-```sh
 Copy code
-git clone https://github.com/yourusername/widget-demo-app.git
+```sh
+git clone https://github.com/naor88/next-widgets.git
 cd widget-demo-app
 ```
 
