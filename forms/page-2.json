@@ -1,0 +1,18 @@
+{
+  "formId": "page-2",
+  "formElements": [
+    {
+      "type": "radio",
+      "label": "radio",
+      "options": [
+        "1",
+        "2",
+        "3"
+      ]
+    },
+    {
+      "type": "file",
+      "label": "add file"
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "formId": "page-3",
+  "formElements": [
+    {
+      "type": "select",
+      "label": "select",
+      "options": [
+        "1",
+        "2",
+        "3"
+      ]
+    },
+    {
+      "type": "week",
+      "label": "select week"
+    }
+  ]
+}

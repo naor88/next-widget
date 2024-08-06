@@ -1,0 +1,28 @@
+{
+  "formId": "page-1",
+  "formElements": [
+    {
+      "type": "checkbox",
+      "label": "element-lab-1",
+      "options": [
+        "1",
+        "2",
+        "3"
+      ]
+    },
+    {
+      "type": "datetime-local",
+      "label": "pick date&time"
+    },
+    {
+      "type": "button",
+      "label": "next",
+      "navigateToFormId": "page-3",
+      "condition": {
+        "elementLabel": "element-lab-1",
+        "operator": "equals",
+        "value": "3"
+      }
+    }
+  ]
+}
